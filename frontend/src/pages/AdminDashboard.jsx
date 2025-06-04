@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './AdminDashboard.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 const AdminDashboard = () => {
   const [loginEmail, setLoginEmail] = useState('admin');
   const [loginPassword, setLoginPassword] = useState('1234');
@@ -11,6 +14,7 @@ const AdminDashboard = () => {
   const [emailToApprove, setEmailToApprove] = useState('');
   const [approvedEmails, setApprovedEmails] = useState([]);
   const [registeredUsers, setRegisteredUsers] = useState([]);
+  const navigate = useNavigate();
 
   // Fetch data once logged in
   useEffect(
@@ -37,7 +41,7 @@ const AdminDashboard = () => {
       setToken(data.token);
       setLoggedIn(true);
     } else {
-      alert('Login failed');
+      toast.error('Login failed');
     }
   };
 
@@ -48,6 +52,7 @@ const AdminDashboard = () => {
     setLoggedIn(false);
     setLoginEmail('admin');
     setLoginPassword('1234');
+    navigate('/admin');
   };
 
   // Approve email
@@ -62,7 +67,7 @@ const AdminDashboard = () => {
     });
 
     const data = await res.json();
-    alert(data.message);
+    toast.success(data.message);
     setEmailToApprove('');
     fetchApprovedEmails();
   };
@@ -80,7 +85,8 @@ const AdminDashboard = () => {
     );
 
     const data = await res.json();
-    alert(data.message);
+    toast.success(data.message);
+
     fetchApprovedEmails();
     fetchRegisteredUsers();
   };
@@ -101,7 +107,6 @@ const AdminDashboard = () => {
     setRegisteredUsers(data);
   };
 
-  // Show login form if not logged in
   if (!loggedIn || !token) {
     return (
       <div className="admin-container">
@@ -187,6 +192,7 @@ const AdminDashboard = () => {
           )}
         </tbody>
       </table>
+      <ToastContainer position="top-center" />
     </div>
   );
 };

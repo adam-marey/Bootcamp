@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
+import './AdminLogin.css';
 
 function AdminLogin() {
   const [username, setUsername] = useState('');
@@ -7,7 +8,6 @@ function AdminLogin() {
   const navigate = useNavigate();
   const [error, setError] = useState('');
 
-  // ✅ If already logged in, redirect to dashboard
   if (localStorage.getItem('adminToken')) {
     return <Navigate to="/admin/dashboard" replace />;
   }
@@ -38,7 +38,7 @@ function AdminLogin() {
   };
 
   return (
-    <div className="admin-container">
+    <div className="admin-login-container">
       <h2>Admin Login</h2>
       <form onSubmit={handleLogin}>
         <input
@@ -48,7 +48,6 @@ function AdminLogin() {
           onChange={e => setUsername(e.target.value)}
           required
         />
-        <br />
         <input
           type="password"
           placeholder="Password"
@@ -56,11 +55,10 @@ function AdminLogin() {
           onChange={e => setPassword(e.target.value)}
           required
         />
-        <br />
         <button type="submit">Login</button>
       </form>
       {error &&
-        <p style={{ color: 'red' }}>
+        <p className="error-message">
           {error}
         </p>}
     </div>
