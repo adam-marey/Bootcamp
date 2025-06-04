@@ -3,6 +3,7 @@ import './AdminDashboard.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+
 const AdminDashboard = () => {
   const [loginEmail, setLoginEmail] = useState('admin');
   const [loginPassword, setLoginPassword] = useState('1234');
@@ -10,13 +11,12 @@ const AdminDashboard = () => {
   const [loggedIn, setLoggedIn] = useState(
     !!localStorage.getItem('adminToken')
   );
-
   const [emailToApprove, setEmailToApprove] = useState('');
   const [approvedEmails, setApprovedEmails] = useState([]);
   const [registeredUsers, setRegisteredUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
-  // Fetch data once logged in
   useEffect(
     () => {
       if (token) {
@@ -27,7 +27,6 @@ const AdminDashboard = () => {
     [token]
   );
 
-  // Admin login
   const login = async () => {
     const res = await fetch('http://localhost:5500/api/admin/login', {
       method: 'POST',
@@ -45,7 +44,6 @@ const AdminDashboard = () => {
     }
   };
 
-  // Logout
   const logout = () => {
     localStorage.removeItem('adminToken');
     setToken('');
@@ -55,7 +53,6 @@ const AdminDashboard = () => {
     navigate('/admin');
   };
 
-  // Approve email
   const approveEmail = async () => {
     const res = await fetch('http://localhost:5500/api/admin/approve', {
       method: 'POST',
@@ -72,7 +69,6 @@ const AdminDashboard = () => {
     fetchApprovedEmails();
   };
 
-  // Delete approved email
   const handleDelete = async email => {
     if (!window.confirm(`Remove ${email} from approved list?`)) return;
 
@@ -86,7 +82,6 @@ const AdminDashboard = () => {
 
     const data = await res.json();
     toast.success(data.message);
-
     fetchApprovedEmails();
     fetchRegisteredUsers();
   };
@@ -106,6 +101,14 @@ const AdminDashboard = () => {
     const data = await res.json();
     setRegisteredUsers(data);
   };
+
+  const filteredApproved = approvedEmails.filter(user =>
+    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredRegistered = registeredUsers.filter(user =>
+    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   if (!loggedIn || !token) {
     return (
@@ -145,29 +148,51 @@ const AdminDashboard = () => {
         <button onClick={approveEmail}>Approve Email</button>
       </div>
 
+      <input
+        type="text"
+        placeholder="Search emails..."
+        value={searchTerm}
+        onChange={e => setSearchTerm(e.target.value)}
+        style={{
+          width: '100%',
+          padding: '10px',
+          marginTop: '20px',
+          marginBottom: '20px'
+        }}
+      />
+
       <h2>Approved Emails</h2>
       <table className="table">
         <thead>
           <tr>
             <th>#</th>
             <th>Email</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {approvedEmails.map((user, index) =>
-            <tr key={user.email}>
-              <td>
-                {index + 1}
-              </td>
-              <td>
-                {user.email}
-              </td>
-              <td>
-                <button onClick={() => handleDelete(user.email)}>🗑️</button>
-              </td>
-            </tr>
-          )}
+          {filteredApproved.map((user, index) => {
+            const isRegistered = registeredUsers.some(
+              reg => reg.email === user.email
+            );
+            return (
+              <tr key={user.email}>
+                <td>
+                  {index + 1}
+                </td>
+                <td>
+                  {user.email}
+                </td>
+                <td style={{ color: isRegistered ? 'green' : 'orange' }}>
+                  {isRegistered ? 'Registered' : 'Not Registered'}
+                </td>
+                <td>
+                  <button onClick={() => handleDelete(user.email)}>🗑️</button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
 
@@ -180,7 +205,7 @@ const AdminDashboard = () => {
           </tr>
         </thead>
         <tbody>
-          {registeredUsers.map((user, index) =>
+          {filteredRegistered.map((user, index) =>
             <tr key={user.id}>
               <td>
                 {index + 1}
