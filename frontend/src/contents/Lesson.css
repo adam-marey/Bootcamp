@@ -1,0 +1,63 @@
+/* Lesson.css */
+
+.lesson-container {
+  padding: 40px;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'Times New Roman', Times, serif;
+  color: #1e293b;
+  line-height: 1.7;
+}
+
+.lesson-container h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #0f172a;
+}
+
+.lesson-container h3 {
+  font-size: 1.25rem;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  color: #334155;
+}
+
+.lesson-container p {
+  font-size: 1.05rem;
+  margin-bottom: 16px;
+}
+
+.lesson-container ul {
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.lesson-container li {
+  margin-bottom: 8px;
+}
+
+.lesson-container code {
+  background-color: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.95rem;
+  color: #1e293b;
+}
+
+/* 🟡 Comment / Tip style */
+.lesson-note {
+  background-color: #fef9c3;
+  padding: 12px 16px;
+  border-left: 4px solid #facc15;
+  border-radius: 6px;
+  margin: 20px 0;
+  font-size: 0.95rem;
+  color: #92400e;
+}
+.translate-widget {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}

@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-
+import Learn from './pages/Learn';
+import './App.css';
 function App() {
   return (
-    <div style={{ textAlign: 'center', marginTop: '80px' }}>
-      <h1>Welcome to the Coding Bootcamp</h1>
+    <div style={{ textAlign: 'center' }}>
+      {/* <h1>Welcome to the Coding Bootcamp</h1>
       <p style={{ fontSize: '18px', marginBottom: '40px' }}>
         Please choose your portal
       </p>
@@ -18,19 +19,20 @@ function App() {
         <Link to="/admin">
           <button style={buttonStyle}>Admin Login</button>
         </Link>
-      </div>
+      </div> */}
+      <Learn />
     </div>
   );
 }
 
-const buttonStyle = {
-  padding: '12px 24px',
-  fontSize: '16px',
-  cursor: 'pointer',
-  borderRadius: '5px',
-  border: 'none',
-  backgroundColor: '#2c3e50',
-  color: '#fff'
-};
+// const buttonStyle = {
+//   padding: '12px 24px',
+//   fontSize: '16px',
+//   cursor: 'pointer',
+//   borderRadius: '5px',
+//   border: 'none',
+//   backgroundColor: '#2c3e50',
+//   color: '#fff'
+// };
 
 export default App;
